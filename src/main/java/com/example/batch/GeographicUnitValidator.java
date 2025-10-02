@@ -18,7 +18,7 @@ public class GeographicUnitValidator implements Validator<GeographicUnit> {
   public void validate(GeographicUnit geographicUnit) throws ValidationException {
     boolean isValid = isValidAnzsic06(geographicUnit.anzsic06())
         && isValidArea(geographicUnit.area())
-        && isValidYear(geographicUnit.year())
+        && isValidYear(geographicUnit.yearRecorded())
         && isValidGeoCount(geographicUnit.geoCount())
         && isValidEcCount(geographicUnit.ecCount());
     if (!isValid) {

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("application.properties")
 public class SpringConfiguration {
   @Bean
   public Set<String> areaCodes(
@@ -83,10 +83,10 @@ public class SpringConfiguration {
   @Bean
   public FlatFileItemReader<GeographicUnit> reader(@Value("${geographicUnitsCsv}") String geographicUnitsCsvPath) {
     return new FlatFileItemReaderBuilder<GeographicUnit>()
-        .name("personItemReader")
+        .name("geographicUnitsItemReader")
         .resource(new ClassPathResource(geographicUnitsCsvPath))
         .delimited()
-        .names("anzsic06", "area", "year", "geoCount", "ecCount")
+        .names("anzsic06", "area", "yearRecorded", "geoCount", "ecCount")
         .targetType(GeographicUnit.class)
         .build();
   }
@@ -103,8 +103,8 @@ public class SpringConfiguration {
   public JdbcBatchItemWriter<GeographicUnit> writer(DataSource dataSource) {
     return new JdbcBatchItemWriterBuilder<GeographicUnit>()
         .sql("""
-            INSERT INTO geographic_units (anzsic06, Area, year, geo_count, ec_count)
-            VALUES (:anzsic06, :area, :year, :geoCount, :ecCount)
+            INSERT INTO geographic_units (anzsic06, area, year_recorded, geo_count, ec_count)
+            VALUES (:anzsic06, :area, :yearRecorded, :geoCount, :ecCount)
             """)
         .dataSource(dataSource)
         .beanMapped()
